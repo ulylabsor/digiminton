@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Digiminton - Aplikasi manajemen badminton untuk skor, member, pembayaran, dan laporan">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Digiminton - Manajemen Badminton</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/scoreboard.css">
+  <link rel="stylesheet" href="css/members.css">
+  <link rel="stylesheet" href="css/payments.css">
+  <link rel="stylesheet" href="css/reports.css">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-icon">🏸</div>
+      <h1 class="splash-title">Digiminton</h1>
+      <p class="splash-subtitle">Manajemen Badminton</p>
+      <div class="splash-loader"></div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="app hidden">
+    <!-- Header -->
+    <header class="app-header" id="app-header">
+      <div class="header-left">
+        <h1 class="header-title" id="header-title">Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="btn-theme-toggle" aria-label="Toggle Theme" title="Mode Gelap/Terang">
+          <svg id="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+        <button class="icon-btn" id="btn-settings" aria-label="Pengaturan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Container -->
+    <main class="page-container" id="page-container">
+      <!-- ==================== DASHBOARD PAGE ==================== -->
+      <section class="page active" id="page-dashboard" data-page="dashboard">
+        <div class="page-content">
+          <div class="welcome-card">
+            <div class="welcome-text">
+              <span class="welcome-greeting">Selamat Datang 👋</span>
+              <h2 class="welcome-club" id="welcome-club-name">Digiminton Club</h2>
+              <div class="sim-traffic">
+                <span class="sim-badge online-badge">
+                  <span class="sim-dot pulse-dot"></span>
+                  <strong id="sim-online">0</strong>&nbsp;Online
+                </span>
+                <span class="sim-badge total-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="margin-right:4px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  <strong id="sim-visitors">0</strong>&nbsp;Total
+                </span>
+              </div>
+            </div>
+            <div class="welcome-icon">🏸</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card stat-primary">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-members">0</span>
+                <span class="stat-label">Member</span>
+              </div>
+            </div>
+            <div class="stat-card stat-accent">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-matches">0</span>
+                <span class="stat-label">Pertandingan</span>
+              </div>
+            </div>
+            <div class="stat-card stat-success">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-revenue">Rp 0</span>
+                <span class="stat-label">Total Pendapatan</span>
+              </div>
+            </div>
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-unpaid">0</span>
+                <span class="stat-label">Belum Lunas</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <h3>Pertandingan Terakhir</h3>
+          </div>
+          <div id="recent-matches" class="recent-list">
+            <div class="empty-state">
+              <span class="empty-icon">🏸</span>
+              <p>Belum ada pertandingan</p>
+              <button class="btn btn-primary btn-sm" onclick="App.navigate('scoreboard')">Mulai Pertandingan</button>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <h3>Top Player</h3>
+          </div>
+          <div id="top-players" class="recent-list">
+            <div class="empty-state">
+              <span class="empty-icon">👥</span>
+              <p>Belum ada member</p>
+              <button class="btn btn-primary btn-sm" onclick="App.navigate('members')">Tambah Member</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SCOREBOARD PAGE ==================== -->
+      <section class="page" id="page-scoreboard" data-page="scoreboard">
+        <div class="page-content">
+          <!-- Match Setup -->
+          <div id="match-setup">
+            <!-- Active Matches List -->
+            <div id="active-matches-section" class="hidden" style="margin-bottom: 20px;">
+              <div class="section-header">
+                <h3>⚡ Pertandingan Berlangsung</h3>
+              </div>
+              <div id="active-matches-list" class="active-matches-list"></div>
+            </div>
+
+            <div class="section-header" style="margin-bottom: 12px;">
+              <h3>➕ Pertandingan Baru</h3>
+            </div>
+            <div class="setup-card">
+              <h3 class="setup-title">⚙️ Pengaturan Pertandingan</h3>
+              
+              <div class="form-group">
+                <label class="form-label">Format Pertandingan</label>
+                <div class="radio-group">
+                  <label class="radio-option active" data-format="42x2">
+                    <input type="radio" name="match-format" value="42x2" checked>
+                    <span class="radio-label">42 × 2 Set</span>
+                    <span class="radio-desc">Default</span>
+                  </label>
+                  <label class="radio-option" data-format="21x3">
+                    <input type="radio" name="match-format" value="21x3">
+                    <span class="radio-label">21 × 3 Set</span>
+                    <span class="radio-desc">BWF</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Tipe Pertandingan</label>
+                <div class="radio-group">
+                  <label class="radio-option" data-type="single">
+                    <input type="radio" name="match-type" value="single">
+                    <span class="radio-label">Single</span>
+                    <span class="radio-desc">1 vs 1</span>
+                  </label>
+                  <label class="radio-option active" data-type="double">
+                    <input type="radio" name="match-type" value="double" checked>
+                    <span class="radio-label">Double</span>
+                    <span class="radio-desc">2 vs 2</span>
+                  </label>
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label class="form-label">Tim 1</label>
+                <div id="team1-players" class="team-players">
+                  <div class="player-select-row">
+                    <div class="custom-select" data-target="team1-p1">
+                      <input type="text" class="form-input cs-search-display" placeholder="Pilih Pemain 1..." autocomplete="off">
+                      <div class="cs-dropdown hidden">
+                        <div class="cs-options"></div>
+                      </div>
+                      <input type="hidden" id="team1-p1" class="team1-select">
+                    </div>
+                  </div>
+                  <div class="player-select-row double-only">
+                    <div class="custom-select" data-target="team1-p2">
+                      <input type="text" class="form-input cs-search-display" placeholder="Pilih Pemain 2..." autocomplete="off">
+                      <div class="cs-dropdown hidden">
+                        <div class="cs-options"></div>
+                      </div>
+                      <input type="hidden" id="team1-p2" class="team1-select">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vs-divider">
+                <span>VS</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Tim 2</label>
+                <div id="team2-players" class="team-players">
+                  <div class="player-select-row">
+                    <div class="custom-select" data-target="team2-p1">
+                      <input type="text" class="form-input cs-search-display" placeholder="Pilih Pemain 1..." autocomplete="off">
+                      <div class="cs-dropdown hidden">
+                        <div class="cs-options"></div>
+                      </div>
+                      <input type="hidden" id="team2-p1" class="team2-select">
+                    </div>
+                  </div>
+                  <div class="player-select-row double-only">
+                    <div class="custom-select" data-target="team2-p2">
+                      <input type="text" class="form-input cs-search-display" placeholder="Pilih Pemain 2..." autocomplete="off">
+                      <div class="cs-dropdown hidden">
+                        <div class="cs-options"></div>
+                      </div>
+                      <input type="hidden" id="team2-p2" class="team2-select">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-lg btn-block" id="btn-start-match">
+                🏸 Mulai Pertandingan
+              </button>
+            </div>
+
+            <!-- Match History in Scoreboard -->
+            <div class="section-header" style="margin-top:24px;">
+              <h3>Riwayat Pertandingan</h3>
+            </div>
+            <div id="scoreboard-history" class="recent-list">
+              <div class="empty-state">
+                <span class="empty-icon">📋</span>
+                <p>Belum ada riwayat</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Match Scoreboard -->
+          <div id="active-match" class="active-match hidden">
+            <!-- Fullscreen Toggle -->
+            <div class="fullscreen-bar">
+              <button class="btn btn-outline btn-sm" id="btn-fullscreen">
+                <svg id="fs-expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                <svg id="fs-shrink-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                <span id="fs-label">Fullscreen</span>
+              </button>
+            </div>
+            <!-- Timer -->
+            <div class="match-timer">
+              <div class="timer-display" id="match-timer">00:00</div>
+              <div class="timer-controls">
+                <button class="timer-btn" id="btn-timer-toggle" title="Play/Pause">
+                  <svg id="timer-play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <svg id="timer-pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                </button>
+                <button class="timer-btn" id="btn-timer-reset" title="Reset Timer">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Set Indicators -->
+            <div class="set-indicators" id="set-indicators">
+              <span class="set-dot active" data-set="1">Set 1</span>
+              <span class="set-dot" data-set="2">Set 2</span>
+              <span class="set-dot hidden" data-set="3">Set 3</span>
+            </div>
+
+            <!-- Scoreboard -->
+            <div class="scoreboard">
+              <div class="team-side team-left">
+                <div class="team-names" id="team1-names">Tim 1</div>
+                <div class="score-display" id="score-team1" data-team="1" data-action="plus" style="cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;" title="Tap untuk tambah poin">0</div>
+                <div class="score-controls">
+                  <button class="score-btn score-minus" data-team="1" data-action="minus" style="width: 40px; height: 40px; font-size: 20px;">−</button>
+                </div>
+                <div class="service-indicator" id="service-team1">
+                  <span class="service-icon">🏸</span>
+                </div>
+              </div>
+
+              <div class="score-divider">
+                <span class="score-separator">:</span>
+                <div class="set-scores" id="set-scores-display"></div>
+              </div>
+
+              <div class="team-side team-right">
+                <div class="team-names" id="team2-names">Tim 2</div>
+                <div class="score-display" id="score-team2" data-team="2" data-action="plus" style="cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;" title="Tap untuk tambah poin">0</div>
+                <div class="score-controls">
+                  <button class="score-btn score-minus" data-team="2" data-action="minus" style="width: 40px; height: 40px; font-size: 20px;">−</button>
+                </div>
+                <div class="service-indicator hidden" id="service-team2">
+                  <span class="service-icon">🏸</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Match Actions -->
+            <div class="match-actions">
+              <button class="btn btn-outline" id="btn-undo-score">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                Undo
+              </button>
+              <button class="btn btn-warning" id="btn-pause-match" style="background: var(--warning); color: #000;">
+                ↩️ Kembali
+              </button>
+              <button class="btn btn-danger" id="btn-end-match">
+                Akhiri Pertandingan
+              </button>
+            </div>
+          </div>
+
+          <!-- Match Result -->
+          <div id="match-result" class="match-result hidden">
+            <div class="result-card">
+              <div class="result-trophy">🏆</div>
+              <h2 class="result-title">Pertandingan Selesai!</h2>
+              <div class="result-winner" id="result-winner">Pemenang: -</div>
+              <div class="result-scores" id="result-scores"></div>
+              
+              <div class="form-group" style="margin-top:20px;">
+                <label class="form-label">Jumlah Shuttlecock Dipakai</label>
+                <input type="number" class="form-input" id="result-shuttlecocks" value="3" min="1" max="50">
+              </div>
+
+              <div class="result-actions">
+                <button class="btn btn-primary btn-block" id="btn-save-match">💾 Simpan & Buat Pembayaran</button>
+                <button class="btn btn-outline btn-block" id="btn-new-match">🔄 Pertandingan Baru</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MEMBERS PAGE ==================== -->
+      <section class="page" id="page-members" data-page="members">
+        <div class="page-content">
+          <div class="search-bar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input" id="member-search" placeholder="Cari member...">
+          </div>
+
+          <div class="member-actions-bar">
+            <span class="member-count" id="member-count">0 Member</span>
+            <button class="btn btn-primary btn-sm" id="btn-add-member">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Tambah
+            </button>
+          </div>
+
+          <div id="members-list" class="members-grid">
+            <div class="empty-state">
+              <span class="empty-icon">👥</span>
+              <p>Belum ada member</p>
+              <p class="empty-sub">Tap "Tambah" untuk menambah member baru</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PAYMENTS PAGE ==================== -->
+      <section class="page" id="page-payments" data-page="payments">
+        <div class="page-content">
+          <div class="payment-summary-cards">
+            <div class="summary-card">
+              <span class="summary-label">Total Tagihan</span>
+              <span class="summary-value" id="pay-total">Rp 0</span>
+            </div>
+            <div class="summary-card paid">
+              <span class="summary-label">Sudah Lunas</span>
+              <span class="summary-value" id="pay-paid">Rp 0</span>
+            </div>
+            <div class="summary-card unpaid">
+              <span class="summary-label">Belum Lunas</span>
+              <span class="summary-value" id="pay-unpaid">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <h3>Daftar Tagihan</h3>
+          </div>
+          
+          <div class="payment-filters" style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <input type="text" id="pay-filter-name" class="form-input" placeholder="Cari nama pemain..." style="flex:1;">
+            <input type="date" id="pay-filter-date" class="form-input" style="flex:1;">
+          </div>
+
+          <div id="payments-list" class="payments-list">
+            <div class="empty-state">
+              <span class="empty-icon">💰</span>
+              <p>Belum ada pembayaran</p>
+              <p class="empty-sub">Pembayaran otomatis dibuat saat pertandingan disimpan</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== REPORTS PAGE ==================== -->
+      <section class="page" id="page-reports" data-page="reports">
+        <div class="page-content">
+          <div class="report-period">
+            <select class="form-select" id="report-period">
+              <option value="all">Semua Waktu</option>
+              <option value="month">Bulan Ini</option>
+              <option value="week">Minggu Ini</option>
+            </select>
+            <button class="btn btn-outline btn-sm" id="btn-export-csv">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export
+            </button>
+          </div>
+
+          <div class="section-header">
+            <h3>🏆 Leaderboard</h3>
+          </div>
+          <div id="leaderboard" class="leaderboard">
+            <div class="empty-state">
+              <span class="empty-icon">🏆</span>
+              <p>Belum ada data</p>
+            </div>
+          </div>
+
+          <div class="section-header" style="margin-top:24px;">
+            <h3>🏸 Pertandingan Bola Terbanyak</h3>
+          </div>
+          <div id="top-shuttlecock-matches" class="leaderboard">
+            <div class="empty-state">
+              <span class="empty-icon">🏸</span>
+              <p>Belum ada data</p>
+            </div>
+          </div>
+
+          <div class="section-header" style="margin-top:24px;">
+            <h3>👤 Pemain Bola Terbanyak</h3>
+          </div>
+          <div id="top-shuttlecock-players" class="leaderboard">
+            <div class="empty-state">
+              <span class="empty-icon">👤</span>
+              <p>Belum ada data</p>
+            </div>
+          </div>
+
+          <div class="section-header" style="margin-top:24px;">
+            <h3>📋 Semua Pertandingan</h3>
+          </div>
+          <div id="all-matches-list" class="recent-list">
+            <div class="empty-state">
+              <span class="empty-icon">📋</span>
+              <p>Belum ada pertandingan</p>
+            </div>
+          </div>
+
+          <div class="chart-card" style="margin-top: 24px;">
+            <h4 class="chart-title">Pertandingan per Bulan</h4>
+            <div class="chart-container">
+              <canvas id="chart-matches"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h4 class="chart-title">Pendapatan per Bulan</h4>
+            <div class="chart-container">
+              <canvas id="chart-revenue"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="nav-item active" data-page="dashboard" id="nav-dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-page="scoreboard" id="nav-scoreboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        <span>Skor</span>
+      </button>
+      <button class="nav-item" data-page="members" id="nav-members">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Member</span>
+      </button>
+      <button class="nav-item" data-page="payments" id="nav-payments">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Bayar</span>
+      </button>
+      <button class="nav-item" data-page="reports" id="nav-reports">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span>Laporan</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+  <!-- Member Modal -->
+  <div class="modal-overlay hidden" id="modal-member">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-member-title">Tambah Member</h3>
+        <button class="modal-close" data-close="modal-member">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="member-edit-id">
+        <div class="form-group">
+          <label class="form-label">Nama</label>
+          <input type="text" class="form-input" id="member-name" placeholder="Nama lengkap" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">No. HP</label>
+          <input type="tel" class="form-input" id="member-phone" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <div class="toggle-row">
+            <span>Aktif</span>
+            <label class="toggle">
+              <input type="checkbox" id="member-active" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-close="modal-member">Batal</button>
+        <button class="btn btn-primary" id="btn-save-member">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay hidden" id="modal-settings">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Pengaturan</h3>
+        <button class="modal-close" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nama Klub</label>
+          <input type="text" class="form-input" id="setting-club-name" placeholder="Nama klub Anda">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Harga per Shuttlecock (Rp)</label>
+          <input type="number" class="form-input" id="setting-price" placeholder="5000" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data</label>
+          <div class="settings-actions">
+            <button class="btn btn-outline btn-sm btn-block" id="btn-export-data">📤 Export Data</button>
+            <label class="btn btn-outline btn-sm btn-block" style="text-align:center;cursor:pointer;">
+              📥 Import Data
+              <input type="file" id="btn-import-data" accept=".json" style="display:none;">
+            </label>
+            <button class="btn btn-danger btn-sm btn-block" id="btn-reset-data">🗑️ Hapus Semua Data</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-close="modal-settings">Batal</button>
+        <button class="btn btn-primary" id="btn-save-settings">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Detail Modal -->
+  <div class="modal-overlay hidden" id="modal-payment-detail">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Detail Pembayaran</h3>
+        <button class="modal-close" data-close="modal-payment-detail">&times;</button>
+      </div>
+      <div class="modal-body" id="payment-detail-body">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-close="modal-payment-detail">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Confirm Modal -->
+  <div class="modal-overlay hidden" id="modal-confirm">
+    <div class="modal modal-sm">
+      <div class="modal-body" style="text-align:center;padding:24px;">
+        <div class="confirm-icon" id="confirm-icon">⚠️</div>
+        <h3 class="confirm-title" id="confirm-title">Konfirmasi</h3>
+        <p class="confirm-message" id="confirm-message">Apakah Anda yakin?</p>
+        <div class="confirm-actions">
+          <button class="btn btn-outline" data-close="modal-confirm">Batal</button>
+          <button class="btn btn-danger" id="btn-confirm-action">Ya, Lanjutkan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/scoreboard.js"></script>
+  <script src="js/members.js"></script>
+  <script src="js/payments.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

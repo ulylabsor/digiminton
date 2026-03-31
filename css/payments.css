@@ -1,0 +1,187 @@
+/* ================================================
+   PAYMENTS STYLES
+   ================================================ */
+
+/* Payment Summary Cards */
+.payment-summary-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.summary-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.summary-card.paid .summary-value { color: var(--success); }
+.summary-card.unpaid .summary-value { color: var(--danger); }
+
+/* Payments List */
+.payments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.payment-card:active {
+  transform: scale(0.98);
+}
+
+.payment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.payment-title-area {
+  flex: 1;
+  min-width: 0;
+}
+
+.payment-title {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.payment-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.payment-amount {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary-light);
+  white-space: nowrap;
+}
+
+.payment-breakdown {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* Payment Detail - Expanded */
+.payment-detail {
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  display: none;
+}
+
+.payment-card.expanded .payment-detail {
+  display: block;
+}
+
+.payment-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.payment-info-label { color: var(--text-secondary); }
+.payment-info-value { font-weight: 600; }
+
+.payment-players-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.payment-player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+}
+
+.payment-player-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-player-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.payment-player-amount {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Payment Status Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  user-select: none;
+}
+
+.status-badge:active { transform: scale(0.92); }
+
+.status-paid {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.status-unpaid {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* Payment Delete */
+.payment-delete-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+}

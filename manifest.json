@@ -1,0 +1,17 @@
+{
+  "name": "Digiminton - Manajemen Badminton",
+  "short_name": "Digiminton",
+  "description": "Aplikasi manajemen badminton: skor, member, pembayaran, dan laporan",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#6c5ce7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
